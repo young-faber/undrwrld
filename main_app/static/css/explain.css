@@ -1,0 +1,10 @@
+body{
+    font-family: gothic2;
+}
+
+@font-face {
+    font-family: gothic2;
+    src: url(/Users/someonefab/Downloads/angel_wish/Angel_wish.ttf);
+    font-style: normal; 
+    font-weight: normal; 
+}

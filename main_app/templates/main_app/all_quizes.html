@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/all_quizes.css' %}">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="header">
+        <div>
+            <a href="/">ссылка в главное меню</a>
+        </div>
+        <p>qqqqq1</p>
+    </div>
+    <div class="container">
+        <div class="search-block">
+            <form action="/gpt_proc" method="get">
+                <label for="">Введите вопрос</label>
+                <input type="text" name="query">
+                <input type="submit" value="Отправить">
+            </form>
+        </div>
+        <div class="orel">
+            <img src="{% static 'img/photo.png'%}" alt="a" height="200" width="200">
+        </div>
+        <div class="content-block">
+            <div class="right">
+                eqeee
+            </div>
+        </div>
+
+        
+
+        <!-- <div class="all_quizes"></div> -->
+    </div>
+
+    <div class="footer">
+        <footer>YW <a href="/quiz_question"> NEXT </a> </footer>
+    </div>
+
+</body>
+
+</html>

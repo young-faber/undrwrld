@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>answ</title>
+</head>
+<body>
+    {{answer}}
+    {{questions.npage}}
+    <div class="container">
+        <h1>Опрос</h1>
+        <div class="question">
+            <p>Какой ваш любимый цвет?</p>
+        </div>
+
+        <ul class="answers">
+            <li><label><input type="radio" name="answer" value="1"> Красный</label></li>
+            <li><label><input type="radio" name="answer" value="2"> Синий</label></li>
+            <li><label><input type="radio" name="answer" value="3"> Зеленый</label></li>
+            <li><label><input type="radio" name="answer" value="4"> Желтый</label></li>
+        </ul>
+
+        <button class="btn" onclick="submitAnswer()">Отправить ответ</button>
+    </div>
+</body>
+</html>

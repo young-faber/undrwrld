@@ -1,0 +1,111 @@
+.zagolovok{
+    color: rgb(167, 32, 32);
+    font-family: gothic;
+    font-size: 55px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    width: 100pc;
+}
+
+body {
+    font-family: neo;
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    height: 100vh;
+    color: #333;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+    height: 80%;
+    border-radius: 10px;
+    justify-content: space-between;
+}
+
+.down{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    background-color: black;
+    color: aliceblue;
+    width: auto;
+    height: 6pc;
+    font-size: larger;
+    border-radius: 10px;
+}
+a{
+    color: aliceblue;
+    text-decoration: none
+}
+
+.left, .right {
+    width: 25%;
+    height: auto;
+    padding: 20px;
+    background-color: #F44336;
+    color: #fff;
+    box-sizing: border-box;
+}
+
+.between{
+    width: 50%;
+    padding: 20px;
+    background-color: #ffffff;
+    color: black;
+    font-family: neo;
+    box-sizing: border-box;
+}
+
+.between a{
+    color: rgb(0, 0, 0);
+    font-family: neo;
+}
+
+.left {
+    background-color: #D32F2F;
+}
+
+.right {
+    background-color: #C62828;
+}
+
+h1 {
+    color: white;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 16px;
+    line-height: 1.5;
+}
+@font-face {
+    font-family: ring;
+    src: url(/Users/someonefab/programs/django_inception/94-font.ttf);
+    font-style: normal; 
+    font-weight: normal; 
+}
+
+@font-face {
+    font-family: gothic;
+    src: url(/Users/someonefab/Downloads/old_london/OldLondon.ttf);
+    font-style: normal; 
+    font-weight: normal; 
+}
+
+@font-face {
+    font-family: neo;
+    src: url(/Users/someonefab/programs/django_inception/Academy_Engraved_LET_Fonts.ttf);
+    font-style: normal; 
+    font-weight: normal; 
+}

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explain 4 skufs & normi$</title>
+</head>
+<body>
+    {{answer}}
+    <div class="container">
+        <h1>Опрос</h1>
+        <div class="question">
+            <p>
+                <form action="/gpt_proc_explain" method="get">
+                <label for="">Введите вопрос</label>
+                <input type="text" name="query_explain">
+                <input type="submit" value="Отправить">
+                </form>
+            </p>
+        </div>
+
+        <button class="btn" onclick="submitAnswer()">Отправить ответ</button>
+    </div>
+</body>
+</html>
