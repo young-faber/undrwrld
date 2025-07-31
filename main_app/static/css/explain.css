@@ -1,10 +1,88 @@
-body{
-    font-family: gothic2;
-}
+body {
+      background-color: #121212;
+      color: #f8f9fa;
+    }
 
-@font-face {
-    font-family: gothic2;
-    src: url(/Users/someonefab/Downloads/angel_wish/Angel_wish.ttf);
-    font-style: normal; 
-    font-weight: normal; 
-}
+    a {
+      color: #dc3545;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    header, footer {
+      background-color: #000;
+      color: #fff;
+    }
+
+
+    footer {
+      padding: 1rem;
+      margin-top: 2rem;
+      text-align: center;
+    }
+
+    
+
+    .main-container {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .left-panel {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .right-panel {
+      width: 300px;
+      margin-left: auto;
+    }
+
+    .quiz-list a {
+      display: block;
+      background-color: #1e1e1e;
+      color: #fff;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 0.75rem;
+      margin-bottom: 0.5rem;
+      transition: background-color 0.2s;
+    }
+
+    .quiz-list a:hover {
+      background-color: #2c2c2c;
+    }
+
+    .form-block {
+      background-color: #1e1e1e;
+      padding: 1.5rem;
+      border-radius: 10px;
+      margin-bottom: 2rem;
+      border: 1px solid #333;
+    }
+
+    .form-label {
+      color: #ccc;
+    }
+
+    .form-control {
+      background-color: #2c2c2c;
+      border: none;
+      color: #fff;
+    }
+
+    .form-control::placeholder {
+      color: #888;
+    }
+
+    .btn-danger {
+      background-color: #dc3545;
+      border: none;
+    }
+
+    .btn-danger:hover {
+      background-color: #bb2d3b;
+    }

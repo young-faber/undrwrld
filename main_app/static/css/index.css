@@ -1,111 +1,258 @@
-.zagolovok{
-    color: rgb(167, 32, 32);
-    font-family: gothic;
-    font-size: 55px;
-    justify-content: center;
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    width: 100pc;
-}
-
 body {
-    font-family: neo;
-    background-color: #fff;
+    font-family: 'Roboto', sans-serif;
+    /* остальное оставить как есть */
+    background-color: #000000;
+    color: #E0E0E0;
     margin: 0;
     padding: 0;
-    display: flex;
     height: 100vh;
-    color: #333;
-    justify-content: center;
-    align-content: center;
+    display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
+    text-shadow: 0 0 2px rgb(0, 0, 0);
 }
 
-.container {
+.container-wrapper {
+    flex: 1;
     display: flex;
-    width: 100%;
-    height: 80%;
-    border-radius: 10px;
-    justify-content: space-between;
-}
-
-.down{
-    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* чтобы кнопка ушла вниз */
     align-items: center;
+    padding: 2rem;
+    min-height: 100vh; /* чтобы работало даже на пустой странице */
+}
+
+.custom-layout {
+    display: flex;
+    justify-content: center;
+    align-items: stretch; /* чтобы все блоки были одной высоты */
+    gap: 2rem;
+    flex-wrap: wrap;
+    width: 100%;
+    flex: 1;
+}
+
+.between {
+    background-color: #000000;
+    padding: 30px 20px;
+    border-radius: 10px;
+    min-width: 320px;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* <-- вертикальное центрирование */
+    align-items: center;
+    text-align: center;
+}
+
+.block {
+    position: relative;
+    width: 100%;
+    min-height: 600px;
+    padding: 20px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    z-index: 1;
+    max-width: 400px;
+    flex: 1;
+    display: flex;
     flex-direction: column;
     justify-content: center;
-    background-color: black;
-    color: aliceblue;
-    width: auto;
-    height: 6pc;
-    font-size: larger;
-    border-radius: 10px;
-}
-a{
-    color: aliceblue;
-    text-decoration: none
+    align-items: center;
 }
 
 .left, .right {
-    width: 25%;
-    height: auto;
-    padding: 20px;
-    background-color: #F44336;
-    color: #fff;
-    box-sizing: border-box;
+    background-color: #000000;
+    border: 1.5px solid #FF1744;
+    box-shadow:
+    0 0 5px #FF1744,
+    0 0 7px #FF003C,
+    0 0 9px #FF003C;
+    transition: transform 1s ease-in-out;
 }
 
-.between{
-    width: 50%;
-    padding: 20px;
-    background-color: #ffffff;
-    color: black;
-    font-family: neo;
-    box-sizing: border-box;
+.left:hover {
+  box-shadow:
+    0 0 5px #FF003C,
+    0 0 10px #FF1744,
+    0 0 15px #FF1744;
+  background-color: rgba(255, 0, 60, 0.1);
+  color: white;
+  transform: scale(1.005);
 }
 
-.between a{
-    color: rgb(0, 0, 0);
-    font-family: neo;
+.right::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0;
+  color: #FF003C;
+  filter: blur(4px);
+  opacity: 0.6;
+  z-index: -1;
 }
 
-.left {
-    background-color: #D32F2F;
+.right:hover {
+  box-shadow:
+    0 0 5px #FF003C,
+    0 0 10px #FF1744,
+    0 0 15px #FF1744;
+  background-color: rgba(255, 0, 60, 0.1);
+  color: white;
+  transform: scale(1.005);
 }
 
-.right {
-    background-color: #C62828;
+.left::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0;
+  color: #FF003C;
+  filter: blur(4px);
+  opacity: 0.6;
+  z-index: -1;
 }
 
-h1 {
+.between {
+    background-color: #000000;
+    padding: 30px 20px;
+    border-radius: 10px;
+    min-width: 320px;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+}
+
+
+
+.subtitle {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
     color: white;
-    font-size: 24px;
-    margin-bottom: 10px;
 }
 
-p {
-    font-size: 16px;
-    line-height: 1.5;
-}
-@font-face {
-    font-family: ring;
-    src: url(/Users/someonefab/programs/django_inception/94-font.ttf);
-    font-style: normal; 
-    font-weight: normal; 
+.subtitle a, .between a, .block a {
+    color: white;
+    text-decoration: underline;
 }
 
-@font-face {
-    font-family: gothic;
-    src: url(/Users/someonefab/Downloads/old_london/OldLondon.ttf);
-    font-style: normal; 
-    font-weight: normal; 
+canvas.hack-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; /* выше фона, но ниже контента */
+    opacity: 1; /* максимум */
+    pointer-events: none;
 }
 
-@font-face {
-    font-family: neo;
-    src: url(/Users/someonefab/programs/django_inception/Academy_Engraved_LET_Fonts.ttf);
-    font-style: normal; 
-    font-weight: normal; 
+.left > *, .right > *, .between > * {
+    position: relative;
+    z-index: 1;
+}
+
+input[type="submit"] {
+    background-color: #444;
+    color: white;
+    border: 1px solid #aaa;
+    padding: 5px 10px;
+}
+
+.down {
+    background-color: black;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 100%;
+}
+
+.down a {
+    color: #ffffff;
+}
+
+.title {
+    position: relative;
+    color: #ffffff;
+}
+
+.button-default {
+  background-color: transparent;
+  color: #FF003C;
+  border: 2px solid #FF003C;
+  padding: 10px 20px;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: bold;
+  box-shadow:
+    0 0 5px #FF003C,
+    0 0 10px #FF003C,
+    0 0 20px #FF1744;
+  transition: 0.3s;
+}
+
+.button-default:hover {
+  box-shadow:
+    0 0 10px #FF003C,
+    0 0 20px #FF1744,
+    0 0 30px #FF1744;
+  background-color: rgba(255, 0, 60, 0.1);
+  color: white;
+}
+
+.glitch-svg-deep {
+  width: 100%;
+  height: 180px;
+  display: block;
+  background: transparent;
+  transform: scale(1.05);
+  margin-bottom: 1rem;
+}
+
+
+.deep-text {
+  font-family: 'Courier New', monospace;
+  font-size: 80px;
+  fill: #ffffff;
+  opacity: 0.15;
+  letter-spacing: 5px;
+  animation: depth 2s ease-in infinite;
+  text-shadow:
+  0 0 4px rgb(255, 0, 60),
+  0 0 12px rgba(255, 0, 60, 0.961);
+}
+
+.underworld-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(247, 255, 142, 0.079) 1%, transparent 70%);
+  filter: blur(35px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+@keyframes drift-depth {
+  0%   { transform: translate(0, 0) scale(1.05); }
+  50%  { transform: translate(-2px, 1px) scale(1.08); }
+  100% { transform: translate(0, 0) scale(1.05); }
+}
+
+
+
+
+@media (max-width: 768px) {
+    .custom-layout {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .block, .between {
+        max-width: 90%;
+        width: 100%;
+    }
 }

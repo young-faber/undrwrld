@@ -1,47 +1,88 @@
+{% extends "main_app/base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
+{% block css %}
+        <link rel="stylesheet" href="{% static 'css/all_quizes.css' %}">
+{% endblock css %}
+{% block title %}🧠 Все викторины {% endblock title %}
+{% block name %} 
+<!-- 🧠 Все викторины  -->
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/all_quizes.css' %}">
-    <title>Document</title>
-</head>
+<div class="container d-flex justify-content-between align-items-center bg-dark-100 text-white py-2 px-3">
+  <div>
+    🧠 Все викторины
+  </div>
+</div>  
 
-<body>
-    <div class="header">
-        <div>
-            <a href="/">ссылка в главное меню</a>
-        </div>
-        <p>qqqqq1</p>
+{% endblock name %}
+
+
+
+{% block content %}
+    <div class="col-4 form-block">
+      <p class="form-label">
+        <p class="stata">Пройденные викторины</p>
+        {% for victorina in user_stata %} 
+          <p class="stata"> {{victorina.victorina.topic}} </p>
+        {% endfor %}
+      </p>
     </div>
-    <div class="container">
-        <div class="search-block">
-            <form action="/gpt_proc" method="get">
-                <label for="">Введите вопрос</label>
-                <input type="text" name="query">
-                <input type="submit" value="Отправить">
-            </form>
-        </div>
-        <div class="orel">
-            <img src="{% static 'img/photo.png'%}" alt="a" height="200" width="200">
-        </div>
-        <div class="content-block">
-            <div class="right">
-                eqeee
+    <!-- Центр часть: форма -->
+    <div class="left-panel">
+      <div class="form-block">
+        <form action="/gpt_proc" method="get">
+          <div class="mb-3">
+            <label for="query" class="form-label">Введите тему викторины</label>
+            <input type="text" id="query" name="query" class="form-control" placeholder="Например: Правители Монтсеррата">
+          </div>
+          <button type="submit" class="btn btn-danger">Отправить</button>
+        </form>
+      </div>
+
+      <div>
+        <a href="/create_quiz" class="button">Создать викторину</a>
+      </div>
+    </div>
+
+
+    <!-- Правая часть: вертикальный список викторин -->
+    <div class="right-panel">
+      <div class="d-flex buttons-hide justify-content-between">
+        <h5 class="text-red mb-3">Сохранённые викторины</h5>
+      </div>
+      <div class='search d-flex'> 
+        <form action="" method="get">
+          {% if query %}
+            <div class="form-control">
+              <input type="text" name="query" id="query" value="{{query}}">
+              <a href="/quiz"><i class="bi bi-x"></i></a>
             </div>
-        </div>
-
-        
-
-        <!-- <div class="all_quizes"></div> -->
+            {% else %}
+            <input type="text" name="query" id="query" placeholder="Поиск викторин">
+          {% endif %}
+          <input type="submit" value="Искать" class="button btn-danger"> 
+        </form>
+      </div>
+      <div class="quiz-list">
+        {% if victorins  %}
+          {% for victorina in victorins %}
+              <div class="d-flex buttons-hide justify-content-between">
+                <a href="/quiz/{{ victorina.id }}">
+                  <div>
+                    {{ victorina.topic }}
+                  </div>
+                </a>
+                
+                  <div class="red-button">
+                    <div><a href="/quiz/edit/{{ victorina.id }}"><i class="bi bi-pencil"></i></a></div>
+                  </div>
+                
+              </div>
+            
+          {% endfor %}
+        {% else %}
+          <p class="search">404 ниче нет</p>
+        {% endif %}
+      </div>
     </div>
+{% endblock content %}
 
-    <div class="footer">
-        <footer>YW <a href="/quiz_question"> NEXT </a> </footer>
-    </div>
-
-</body>
-
-</html>

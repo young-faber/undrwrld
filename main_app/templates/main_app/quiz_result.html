@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/quiz_result.css' %}" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <title>Document</title>
+  </head>
+  <!-- <body>
+    <h2>{{correct}} правильных из {{j}}</h2>
+    {% for question in data_list %}
+        <p> <i> <b>{{question.question}} </b></i></p>
+        {% if question.user_answer != question.correct_answer %}
+            <p class="uncorrect"> {{question.user_answer}}</p> 
+            <p class="correct">{{question.correct_answer}}</p>
+        {% else %}
+            <p class="correct"> {{question.user_answer}}</p>
+        {% endif %}
+
+    {% endfor %}
+</body> -->
+
+  <body>
+    <div class="container mt-5">
+      <h2 class="mb-4 text-center">{{ correct }} правильных из {{ j }}</h2>
+
+      {% for question in data_list %}
+      <div
+        class="mb-4 p-3 border rounded shadow-sm answer-div"
+        id="answer-div-1"
+      >
+        <p class="h5">
+          <i><b>{{ question.question }}</b></i>
+        </p>
+
+        {% if question.user_answer != question.correct_answer %}
+        <p class="uncorrect text-danger mb-1">{{ question.user_answer }}</p>
+        <p class="correct text-success">{{ question.correct_answer }}</p>
+        {% else %}
+        <p class="correct text-success">{{ question.user_answer }}</p>
+        {% endif %}
+      </div>
+      {% endfor %}
+      <div id="save_quiz_to_bd">SAVE VICT</div>
+
+      <div id="text">text</div>
+      <div id="second">second</div>
+      <div id="second"></div>
+    </div>
+  </body>
+
+  <script>
+    function changeText(e) {
+      console.log(e, e.target.id);
+      document.getElementById("text").innerText = "WW вы нажали на кнопку";
+    }
+
+    document.getElementById("text").addEventListener("click", changeText);
+    document.getElementById("second").addEventListener("mouseenter", (e) => {
+      console.log(1);
+      document.getElementById("second").innerText = "second change";
+    });
+    document
+      .getElementById("save_quiz_to_bd")
+      .addEventListener("click", (e) => {
+        fetch("http://127.0.0.1:8000/save_quiz_to_bd", { method: "GET" }).then((response) => {
+          console.log(response)
+          if (response.ok){
+            alert("uspeshno W")
+            window.top.location.href = "/quiz";
+          }else{
+            alert('error 400 invalid')
+          }
+          
+        });
+      });
+  </script>
+</html>

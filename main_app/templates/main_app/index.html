@@ -1,36 +1,154 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/index.css' %}">
-    <title>undrwrld</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>undrwrld</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/index.css' %}">
+  
 </head>
-
 <body>
-    <div class="zagolovok"><h1='zagolovok'>UNDERWORLD.</h1></div>
-    <div class="container">
-        <div class="left">
-            <h1>что тут происходит</h1>
-            <p>Это текст в левом блоке. Он расположен слева и будет отображаться на красном фоне. Здесь можно написать какую-то информацию или описание.</p>
+  <div class="container-wrapper">
+    <div class="custom-layout">
+      <div class="left block text-white text-center">
+        <canvas class="hack-canvas"></canvas>
+        <h1>что тут происходит</h1>
+        {{request.user}}
+        <p>Это текст в левом блоке...</p>
+      </div>
+
+      <div class="between center-block text-white">
+        <div class="zagolovok mb-2">
+          <div class="underworld-glow"></div>
+          <svg viewBox="0 0 800 200" class="glitch-svg-deep">
+            <defs>
+              <filter id="deep-blur">
+                <feTurbulence type="turbulence" baseFrequency="0.008" numOctaves="3" result="turb"/>
+                <feDisplacementMap in2="turb" in="SourceGraphic" scale="30" xChannelSelector="R" yChannelSelector="G"/>
+                <feGaussianBlur stdDeviation="2.5" result="blurred"/>
+                <feMerge>
+                  <feMergeNode in="blurred"/>
+                </feMerge>
+              </filter>
+
+              <radialGradient id="deep-light" cx="50%" cy="50%" r="70%">
+                <stop offset="0%" stop-color="#0A0A0A;" stop-opacity="0.2"/>
+                <stop offset="100%" stop-color="#000000" stop-opacity="0.9"/>
+              </radialGradient>
+            </defs>
+
+            <rect width="100%" height="100%" fill="url(#deep-light)" />
+            <text x="50%" y="55%" class="deep-text" text-anchor="middle" filter="url(#deep-blur)">UNDERWORLD.</text>
+          </svg>
         </div>
-        <div class='between'>
-            <h2>
-            <a href="/explain"> что значит слова жеские </a>
-            </h2>
-        </div>
-        <div class="right">
-            <h1>о чем сайт</h1>
-            <p>Это текст в правом блоке. Он расположен справа и также будет отображаться на красном фоне, но с немного другим оттенком. Дополнительный контент можно добавить сюда.</p>
-        </div>
+
+        <h2 class='button-default btn-lg'>
+          <a href="/explain">что значит слова жеские</a>
+        </h2>
+
+        {% if not request.user.is_authenticated %}
+          <form action="" method="post">
+            {% csrf_token %}
+            {{login_form.as_div}} 
+            <input type="submit">
+          </form>
+        {% else %}
+          <a href="/user/logout" class="btn button-default">выход (экзекхъюхт)</a>
+        {% endif %}
+      </div>
+
+      <div class="right block text-white text-center">
+        <canvas class="hack-canvas"></canvas>
+        <h1>о чем сайт</h1>
+        {{you}}
+        <p>Это текст в правом блоке...</p>
+      </div>
     </div>
-    <div class="down">
-        <a href="/quiz"> переход к викторинам </a>
+
+    <div class="down text-center mt-4">
+      <a href="/quiz" class="btn button-default">переход к викторинам</a>
     </div>
-    
+  </div>
+
+  <script>
+    document.querySelectorAll('.hack-canvas').forEach((canvas) => {
+      const ctx = canvas.getContext('2d');
+      const letters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZЪ'.split('');
+      const specialWords = [
+        'UNDERWORLD', 'ARSENIY', 'EXECUTE', 'I SEE YOU', 'WELCOME',
+        'WAS CREATED BY FABER', 'SPONSORED BY VLADIMIR ROMANENKO',
+        'EI_ZER', 'DJANGO_INCEPTION'
+      ];
+
+      const fontSize = 22;
+      let columns, drops, specialDrops = [];
+
+      function resize() {
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+        columns = Math.floor(canvas.width / fontSize);
+        drops = new Array(columns).fill(1);
+        specialDrops = new Array(columns).fill(null);
+      }
+
+      resize();
+      window.addEventListener('resize', resize);
+
+      function draw() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.font = fontSize + 'px monospace';
+
+        for (let i = 0; i < drops.length; i++) {
+          let char, color;
+
+          if (specialDrops[i]) {
+            const word = specialDrops[i];
+            char = word.chars[word.index];
+            color = '#FF003C';
+            word.index++;
+            if (word.index >= word.chars.length) {
+              specialDrops[i] = null;
+            }
+          } else {
+            char = letters[Math.floor(Math.random() * letters.length)];
+            color = '#FFFFFF';
+
+            if (Math.random() < 0.003) {
+              const word = specialWords[Math.floor(Math.random() * specialWords.length)];
+              specialDrops[i] = {
+                chars: word.split(''),
+                index: 0
+              };
+            }
+          }
+
+          const x = i * fontSize;
+          const y = drops[i] * fontSize;
+
+          ctx.shadowColor = color;
+          ctx.shadowBlur = (color === '#FF003C') ? 10 : 3;
+          ctx.fillStyle = color;
+          ctx.fillText(char, x, y);
+
+          ctx.shadowBlur = 0;
+          ctx.fillStyle = color;
+          ctx.fillText(char, x, y);
+
+          if (y > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+            specialDrops[i] = null;
+          }
+
+          drops[i]++;
+        }
+      }
+
+      setInterval(draw, 40);
+    });
+  </script>
 </body>
-
 </html>
-

@@ -1,0 +1,20 @@
+.uncorrect{
+    color: red
+}
+
+.correct{
+    color: green
+}
+
+body{
+    background-color: #fff2e2;
+}
+.answer-div{
+    transition: 5s;
+}
+
+.answer-div:hover{
+    background-color: rgb(209, 209, 209);
+    transform: scale(1.1);
+    transition: 0.5s;
+}

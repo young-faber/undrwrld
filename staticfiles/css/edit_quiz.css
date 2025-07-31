@@ -1,0 +1,30 @@
+.victorina {
+
+}
+
+.victorina input{
+    width: 50%;
+    margin-bottom: 1rem;
+    color: blueviolet;
+}
+
+.question{
+    margin-bottom: 1vw;
+}
+
+.question input{
+    /* width: 25vw; */
+    margin-bottom: 0;
+    margin-left: 1vw;
+    font-weight: bold;
+    color: chocolate;
+}
+
+.answer {
+
+}
+
+.answer input{
+    color: red;
+    margin-left: 1.5vw;
+}

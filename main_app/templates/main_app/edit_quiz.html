@@ -1,0 +1,34 @@
+{% extends "main_app/base.html" %}
+{% load static %}
+{% block title %}edit_vict{% endblock title %}
+{% block name %}редактированние викторины{% endblock name %}
+{% block css %}
+        <link rel="stylesheet" href="{% static 'css/edit_quiz.css' %}">
+{% endblock css %}
+
+
+{% block content %}
+   <div>
+        <!--django_html через for вывел вопросы, для каждого вопроса - вывел ответы (также как victorina)-->
+          <form action="/edit_quiz_support/" method="post">
+               {% csrf_token %}
+               <input type="hidden" name="quiz_id" value="{{victorina.id}}">
+               <div class="victorina">
+               <input type="text" name='topic' value="{{victorina.topic}}"> 
+               {% for n, question_info in question_list %}
+                    <div class="question">
+                         <input type="hidden" name="question_id{{n}}" value="{{ question_info.question.id }}">
+                         <input type="text" name='quest{{n}}' value="{{question_info.question.text}}">
+                    {% for i, answer in question_info.answers %}
+                         <div class="answer">
+                         <input type="hidden" name="answer_id{{n}}_{{i}}" value="{{ answer.id }}">
+                         <input type="text" name="answer{{n}}_{{i}}" value="{{answer.text}}" >
+                         </div>
+                    {% endfor %}
+                    </div>
+               {% endfor %}
+               </div>
+            <input type="submit">
+        </form>
+   </div>
+{% endblock content %}

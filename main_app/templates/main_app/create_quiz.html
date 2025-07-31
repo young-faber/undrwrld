@@ -1,0 +1,26 @@
+{% extends "main_app/base.html" %}
+{% load static %}
+{% block title %}edit_vict{% endblock title %}
+{% block name %}создание викторины{% endblock name %}
+{% block css %}
+        <link rel="stylesheet" href="{% static 'css/edit_quiz.css' %}">
+{% endblock css %}
+
+
+{% block content %}
+{{hello}}
+{{a}}
+   <div>
+          <form action="/create_quiz_support/" method="post">
+               {% csrf_token %}
+               {{quiz_form}}
+               {% for question_form in question_form_set %}
+                    {{question_form}}
+                    {{question_form.answer_form_set.management_form}}
+                    {% for answer_form in question_form.answer_form_set.forms %}
+                         {{answer_form}}
+                    {% endfor %}
+               {% endfor %}
+        </form>
+   </div>
+{% endblock content %}

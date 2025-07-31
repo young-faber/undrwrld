@@ -1,25 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Explain 4 skufs & normi$</title>
-</head>
-<body>
-    {{answer}}
-    <div class="container">
+{% extends "main_app/base.html" %}
+{% load static %}
+{% block title %}Explain 4 skufs & normi${% endblock title %}
+{% block name %}Значение слов{% endblock name %}
+
+
+
+{% block content %}
+   <div class="vh-10">  <!-- гпт схавает  -->
         <h1>Опрос</h1>
         <div class="question">
             <p>
-                <form action="/gpt_proc_explain" method="get">
+            <form action="" method="get">
                 <label for="">Введите вопрос</label>
                 <input type="text" name="query_explain">
                 <input type="submit" value="Отправить">
-                </form>
+            </form>
             </p>
         </div>
-
-        <button class="btn" onclick="submitAnswer()">Отправить ответ</button>
     </div>
-</body>
-</html>
+    {% if answer %}
+    <div class="answer-block">
+        <p>{{answer}}</p>
+    </div>
+    {% endif %}
+    <div>   
+        <img src="{% static 'img/smart.jpeg' %}" alt="жаль, не все поймут  )) тонко, тонко))">
+        <img src="{% static 'img/oxxxy.jpeg' %}" alt="oxxxy smart af)) ">
+        <img src="{% static 'img/tayler30ft.smart.png' %}" alt="tayler smart))" style="position: fixed; bottom: 0; left: 0; width: 100%; height: 20%; z-index: -1; opacity: 0.8;">
+        <img src="{% static 'img/party-guy.jpeg' %}" alt="party-guy">
+        <img src="{% static 'img/brain.jpeg' %}" alt="brain">
+        <img src="{% static 'img/scientists.jpeg' %}" alt="scientists">
+    </div>
+{% endblock content %}
+

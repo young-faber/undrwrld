@@ -1,27 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <title>answ</title>
 </head>
+
+
+
 <body>
-    {{answer}}
-    {{questions.npage}}
-    <div class="container">
-        <h1>Опрос</h1>
-        <div class="question">
-            <p>Какой ваш любимый цвет?</p>
+    <div class="container mt-5">
+        <h1 class="mb-4 text-center">Опрос</h1>
+
+        <div class="question mb-3">
+            <p class="h5">{{ question.question }}</p>
         </div>
 
-        <ul class="answers">
-            <li><label><input type="radio" name="answer" value="1"> Красный</label></li>
-            <li><label><input type="radio" name="answer" value="2"> Синий</label></li>
-            <li><label><input type="radio" name="answer" value="3"> Зеленый</label></li>
-            <li><label><input type="radio" name="answer" value="4"> Желтый</label></li>
-        </ul>
+        <form action="" method="get">
+            <input type="hidden" name="q_number" value="{{ q_number }}"> <!-- проверка что мы отвечаем на вопросы по очереди -->
 
-        <button class="btn" onclick="submitAnswer()">Отправить ответ</button>
+            {% if error %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endif %}
+
+            <ul class="answers list-unstyled">
+                {% for answer in question.answers %}
+                    <li class="mb-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="answer" id="answer{{ forloop.counter }}" value="{{ answer }}" 
+                                {% if answer_from_ses and answer_from_ses.user_answer == answer %} checked {% endif %}>
+                            <label class="form-check-label" for="answer{{ forloop.counter }}">
+                                {{ answer }}
+                            </label>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <button class="btn btn-success mt-3" type="submit" id="submit-button" {% if not answer_from_ses %} disabled {% endif %}>
+                отправить ответ
+            </button>
+        </form>
     </div>
 </body>
+
+
+<script>
+    const radios = document.querySelectorAll('input[name="answer"]');
+    const submitButton = document.getElementById('submit-button');
+
+    radios.forEach(radio => {
+        radio.addEventListener('change', () => {
+            submitButton.disabled = false;
+        });
+    });
+</script>
+
 </html>
