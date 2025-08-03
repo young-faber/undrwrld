@@ -18,14 +18,25 @@
 
 
 {% block content %}
-    <div class="col-4 form-block">
-      <p class="form-label">
-        <p class="stata">Пройденные викторины</p>
-        {% for victorina in user_stata %} 
-          <p class="stata"> {{victorina.victorina.topic}} </p>
+    <div class="col-12 col-md-6 col-lg-4">
+  <div class="card bg-dark text-light border-secondary shadow-sm">
+    <div class="card-body">
+      <!-- Красивый заголовок с фоном и скруглениями -->
+      <div class="px-3 py-2 rounded-pill" style="background-color: #00e5ff; color: #0a0a0a; display: inline-block; font-weight: 600; margin-bottom: 1ex;">
+        Пройденные викторины
+    </div>   
+
+      <!-- Список викторин -->
+      <div class="d-flex flex-column gap-2">
+        {% for victorina in user_stata %}
+          <div class="p-2 border rounded text-light" style="background-color: #1c1c1c; border-color: #444;">
+            <strong>{{ victorina.victorina.topic }}</strong>
+          </div>
         {% endfor %}
-      </p>
+      </div>
     </div>
+  </div>
+</div>
     <!-- Центр часть: форма -->
     <div class="left-panel">
       <div class="form-block">
@@ -34,55 +45,47 @@
             <label for="query" class="form-label">Введите тему викторины</label>
             <input type="text" id="query" name="query" class="form-control" placeholder="Например: Правители Монтсеррата">
           </div>
-          <button type="submit" class="btn btn-danger">Отправить</button>
+          <div>
+            <button type="submit" class="btn btn-info">Отправить</button>
+            <a href="/create_quiz" class="btn btn-warning">Создать викторину</a>
+          </div>
         </form>
-      </div>
-
-      <div>
-        <a href="/create_quiz" class="button">Создать викторину</a>
+        
       </div>
     </div>
 
 
     <!-- Правая часть: вертикальный список викторин -->
     <div class="right-panel">
-      <div class="d-flex buttons-hide justify-content-between">
-        <h5 class="text-red mb-3">Сохранённые викторины</h5>
-      </div>
-      <div class='search d-flex'> 
-        <form action="" method="get">
-          {% if query %}
-            <div class="form-control">
-              <input type="text" name="query" id="query" value="{{query}}">
-              <a href="/quiz"><i class="bi bi-x"></i></a>
-            </div>
-            {% else %}
-            <input type="text" name="query" id="query" placeholder="Поиск викторин">
-          {% endif %}
-          <input type="submit" value="Искать" class="button btn-danger"> 
-        </form>
-      </div>
-      <div class="quiz-list">
-        {% if victorins  %}
-          {% for victorina in victorins %}
-              <div class="d-flex buttons-hide justify-content-between">
-                <a href="/quiz/{{ victorina.id }}">
-                  <div>
-                    {{ victorina.topic }}
-                  </div>
-                </a>
-                
-                  <div class="red-button">
-                    <div><a href="/quiz/edit/{{ victorina.id }}"><i class="bi bi-pencil"></i></a></div>
-                  </div>
-                
-              </div>
-            
-          {% endfor %}
-        {% else %}
-          <p class="search">404 ниче нет</p>
-        {% endif %}
-      </div>
+  <div class="p-3 rounded-3" style="background-color: #1c1c1c;">
+
+    <!-- Заголовок -->
+    <div class="px-3 py-2 rounded-pill mb-3" style="background-color: #00e5ff; color: #0a0a0a; display: inline-block; font-weight: 600;">
+      Сохранённые викторины
     </div>
+
+    <!-- Поиск -->
+    <form action="" method="get" class="d-flex gap-2 mb-3">
+      <input type="text" name="query" id="query" class="form-control form-control-sm" placeholder="Поиск викторин"
+             style="background-color: #111; border: 1px solid #333; color: #fff;">
+      <input type="submit" value="Искать" class="btn btn-sm" style="background-color: #00e5ff; color: #000;">
+    </form>
+
+    <!-- Список викторин -->
+    <div class="d-flex flex-column gap-2">
+      {% for victorina in victorins %}
+        <a href="/quiz/{{ victorina.id }}" class="text-decoration-none">
+          <div class="px-3 py-2 border rounded text-white"
+               style="background-color: #121212; border-color: #333;">
+            {{ victorina.topic }}
+          </div>
+        </a>
+      {% empty %}
+        <p class="text-muted fst-italic">404 — ниче нет</p>
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
 {% endblock content %}
 

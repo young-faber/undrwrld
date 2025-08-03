@@ -1,26 +1,105 @@
 {% extends "main_app/base.html" %}
 {% load static %}
-{% block title %}edit_vict{% endblock title %}
+{% block title %}create_quiz{% endblock title %}
 {% block name %}создание викторины{% endblock name %}
+
 {% block css %}
-        <link rel="stylesheet" href="{% static 'css/edit_quiz.css' %}">
+<style>
+  body {
+    background-color: #121212;
+    color: white;
+  }
+
+  form {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .quiz-meta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .quiz-meta input {
+    background-color: #0a0a0a;
+    color: white;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .question-block {
+    display: flex;
+    flex-direction: column;
+    background-color: #1c1c1c;
+    border: 1px solid #333;
+    padding: 1rem;
+    border-radius: 10px;
+    gap: 0.75rem;
+  }
+
+  .question-block input[type="text"],
+  .question-block textarea {
+    background-color: #0a0a0a;
+    color: white;
+    border: 1px solid #333;
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+    width: 100%;
+  }
+
+  .question-block textarea {
+    min-height: 40px;
+    max-height: 80px;
+    resize: vertical;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: #00e5ffcc;
+    font-style: italic;
+  }
+
+  .submit-btn {
+    background-color: #00e5ff;
+    color: #000;
+    font-weight: 600;
+    border: none;
+    padding: 0.5rem 1.5rem;
+    border-radius: 999px;
+    display: block;
+    margin-top: 1rem;
+    align-self: center;
+    box-shadow: 0 0 10px #00e5ff80;
+  }
+</style>
 {% endblock css %}
 
-
 {% block content %}
-{{hello}}
-{{a}}
-   <div>
-          <form action="/create_quiz_support/" method="post">
-               {% csrf_token %}
-               {{quiz_form}}
-               {% for question_form in question_form_set %}
-                    {{question_form}}
-                    {{question_form.answer_form_set.management_form}}
-                    {% for answer_form in question_form.answer_form_set.forms %}
-                         {{answer_form}}
-                    {% endfor %}
-               {% endfor %}
-        </form>
-   </div>
+<form action="/create_quiz_support/" method="post">
+  {% csrf_token %}
+
+  <!-- Общая информация -->
+  <div class="quiz-meta">
+    <input type="text" name="topic" placeholder="Введите название викторины">
+    <input type="text" name="level" placeholder="Уровень сложности">
+  </div>
+
+  <!-- Вопросы -->
+  {% for i in "12345"|make_list %}
+    <div class="question-block">
+      <input type="text" name="question_{{ i }}" placeholder="Вопрос {{ i }}">
+      {% for j in "1234"|make_list %}
+        <input type="text" name="answer_{{ i }}_{{ j }}" placeholder="Ответ {{ j }}">
+      {% endfor %}
+    </div>
+  {% endfor %}
+
+  <button type="submit" class="submit-btn">Создать викторину</button>
+</form>
 {% endblock content %}

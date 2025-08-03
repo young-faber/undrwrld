@@ -78,8 +78,16 @@
       {% block content %}{% endblock content %}
     </main>
 
+   
+
     <footer>
-      www - wrld win web | <a href="/quiz/">Lobby</a>
+      www - wrld win web | 
+      
+      {% if request.resolver_match.url_name == "quiz/" %}
+    <a href="/">Lobby</a>
+    {% else %}
+    <a href="/quiz/">All quizes</a>
+    {% endif %}
     </footer>
 
     <!-- Модальное окно чата -->

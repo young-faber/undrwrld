@@ -2,103 +2,170 @@
 {% load static %}
 {% block title %}chat{% endblock title %}
 {% block name %}chat_w{% endblock name %}
+
 {% block css %}
-        <!-- <link rel="stylesheet" href="{% static 'css/edit_quiz.css' %}"> -->
-    <style>
-    #chatBox {
-    transition: opacity 0.3s ease;
-    opacity: 0;
-    }
-    #chatBox.show {
-    opacity: 1;
-    }
-    </style>
+<style>
+  /* Анимация появления */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .chat-toggle-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1050;
+    background-color: #00e5ff;
+    color: #0a0a0a;
+    border: none;
+    padding: 10px 16px;
+    font-weight: bold;
+    border-radius: 999px;
+    box-shadow: 0 0 10px #00e5ff80;
+  }
+
+  .chat-card {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 320px;
+    background-color: #1c1c1c;
+    color: #f1f1f1;
+    border-radius: 15px;
+    box-shadow: 0 0 20px #000;
+    display: none;
+    flex-direction: column;
+    z-index: 1050;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .chat-header {
+    background-color: #00e5ff;
+    color: #000;
+    font-weight: 600;
+    padding: 0.6rem 1rem;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+  }
+
+  .chat-body {
+    padding: 1rem;
+    height: 300px;
+    overflow-y: auto;
+    background-color: #121212;
+  }
+
+  .chat-footer {
+    padding: 0.75rem;
+    background-color: #1c1c1c;
+    border-top: 1px solid #333;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+  }
+
+  .chat-input {
+    width: 100%;
+    background-color: #0a0a0a;
+    color: white;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .chat-message {
+    background-color: #242424;
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0.5rem;
+    word-break: break-word;
+    animation: fadeIn 0.2s ease-in-out;
+  }
+
+  .chat-message.user {
+    background-color: #00e5ff22;
+    border-left: 3px solid #00e5ff;
+    margin-left: auto;
+    text-align: right;
+  }
+
+  .chat-message.system {
+    color: #ccc;
+    font-style: italic;
+  }
+</style>
 {% endblock css %}
 
-
 {% block content %}
-<button id="chatToggle" class="btn btn-primary">Чат</button>
+<!-- Кнопка активации чата -->
+<button id="chatToggle" class="chat-toggle-btn">Чат</button>
 
 <!-- Чат-бокс -->
-<div id="chatBox" class="card shadow" style="display: none; position: absolute; bottom: 70px; right: 20px; width: 300px; z-index: 1050;">
-  <div class="card-header bg-dark text-white">
-    Чат
+<div id="chatBox" class="chat-card">
+  <div class="chat-header">Чат</div>
+  <div class="chat-body" id="chatMessages">
+    <div class="chat-message system">Добро пожаловать!</div>
   </div>
-  <div class="card-body" style="height: 300px; overflow-y: auto;">
-    <div id="chatMessages">
-      <p>Добро пожаловать!</p>
-    </div>
-  </div>
-  <div class="card-footer p-2">
-    <input type="text" class="form-control" placeholder="Введите сообщение...">
+  <div class="chat-footer">
+    <input type="text" class="chat-input" id="chatInput" placeholder="Введите сообщение...">
   </div>
 </div>
 {% endblock content %}
 
 {% block scripts %}
 <script>
-  // Получить CSRF-токен из <input type="hidden">
   function getCSRFToken() {
-    return document.querySelector("[name=csrfmiddlewaretoken]").value;
+    return document.querySelector("[name=csrfmiddlewaretoken]")?.value;
   }
 
-  // DOM элементы
-  const chatModalEl = document.getElementById("chatModal");
   const chatBox = document.getElementById("chatBox");
   const chatMessages = document.getElementById("chatMessages");
   const chatInput = document.getElementById("chatInput");
-  const sendChatBtn = document.getElementById("sendChatBtn");
   const chatToggle = document.getElementById("chatToggle");
 
-  // При открытии модалки — фокус на инпут
-  chatModalEl.addEventListener("shown.bs.modal", () => {
-    chatInput.focus();
-  });
-
-  // При клике по кнопке в контенте — показать/скрыть чат-бокс
   chatToggle.addEventListener("click", () => {
-    const isHidden = chatBox.style.display === "none" || chatBox.style.display === "";
-    chatBox.style.display = isHidden ? "block" : "none";
+    chatBox.style.display = chatBox.style.display === "none" ? "flex" : "none";
+    if (chatBox.style.display === "flex") {
+      chatInput.focus();
+    }
   });
 
-  // Обработка кнопки "Отправить"
-  sendChatBtn.addEventListener("click", () => {
-    const message = chatInput.value.trim();
-    if (!message) return;
+  function appendMessage(message, type = "user") {
+    const msgElem = document.createElement("div");
+    msgElem.classList.add("chat-message", type);
+    msgElem.textContent = message;
+    chatMessages.appendChild(msgElem);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
 
-    fetch("/chat/chat/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRFToken": getCSRFToken(),
-      },
-      body: JSON.stringify({ message }),
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("Ошибка при отправке");
-        return res.json();
+  chatInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const message = chatInput.value.trim();
+      if (!message) return;
+
+      appendMessage(message, "user");
+      chatInput.value = "";
+
+      fetch("/chat/chat/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCSRFToken(),
+        },
+        body: JSON.stringify({ message }),
       })
+      .then((res) => res.json())
       .then((data) => {
-        // Закрыть модалку
-        const modal = bootstrap.Modal.getInstance(chatModalEl);
-        modal.hide();
-
-        // Показать чат-бокс
-        chatBox.style.display = "block";
-
-        // Вставить сообщение
-        const msgElem = document.createElement("p");
-        msgElem.innerText = data.message || message;
-        chatMessages.appendChild(msgElem);
-
-        // Очистить поле
-        chatInput.value = "";
+        const reply = data.message || "Сообщение получено";
+        appendMessage(reply, "system");
       })
-      .catch((err) => {
-        console.error("Ошибка отправки:", err);
+      .catch(err => {
+        console.error("Ошибка:", err);
+        appendMessage("Ошибка отправки сообщения", "system");
       });
+    }
   });
 </script>
 {% endblock scripts %}
-
-
