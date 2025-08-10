@@ -314,8 +314,8 @@ def edit_quiz_support(request):
                 answer = Answer.objects.get(id=answer_id)
                 answer.text = answer_text
                 answer.save()
-
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    return redirect("/quiz/")
+    # return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
 class CreateQuizView(CreateView):

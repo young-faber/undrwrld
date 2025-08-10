@@ -1,8 +1,8 @@
 body {
     font-family: 'Roboto', sans-serif;
     /* остальное оставить как есть */
-    background-color: #000;
-    color: white;
+    background-color: #000000;
+    color: #E0E0E0;
     margin: 0;
     padding: 0;
     height: 100vh;
@@ -60,12 +60,54 @@ body {
     align-items: center;
 }
 
-.left {
-    background-color: #D32F2F;
+.left, .right {
+    background-color: #000000;
+    border: 1.5px solid #FF1744;
+    box-shadow:
+    0 0 5px #FF1744,
+    0 0 7px #FF003C,
+    0 0 9px #FF003C;
+    transition: transform 1s ease-in-out;
 }
 
-.right {
-    background-color: #C62828;
+.left:hover {
+  box-shadow:
+    0 0 5px #FF003C,
+    0 0 10px #FF1744,
+    0 0 15px #FF1744;
+  background-color: rgba(255, 0, 60, 0.1);
+  color: white;
+  transform: scale(1.005);
+}
+
+.right::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0;
+  color: #FF003C;
+  filter: blur(4px);
+  opacity: 0.6;
+  z-index: -1;
+}
+
+.right:hover {
+  box-shadow:
+    0 0 5px #FF003C,
+    0 0 10px #FF1744,
+    0 0 15px #FF1744;
+  background-color: rgba(255, 0, 60, 0.1);
+  color: white;
+  transform: scale(1.005);
+}
+
+.left::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0;
+  color: #FF003C;
+  filter: blur(4px);
+  opacity: 0.6;
+  z-index: -1;
 }
 
 .between {
@@ -82,11 +124,7 @@ body {
     flex: 1;
 }
 
-.zagolovok .title {
-    font-size: 3rem;
-    margin: 0 0 10px 0;
-    color: white;
-}
+
 
 .subtitle {
     margin-bottom: 20px;
@@ -105,8 +143,9 @@ canvas.hack-canvas {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 0;
-    opacity: 0.15;
+    z-index: 1; /* выше фона, но ниже контента */
+    opacity: 1; /* максимум */
+    pointer-events: none;
 }
 
 .left > *, .right > *, .between > * {
@@ -130,7 +169,91 @@ input[type="submit"] {
 }
 
 .down a {
-    color: white;
+    color: #ffffff;
+}
+
+.title {
+    position: relative;
+    color: #ffffff;
+}
+
+.button-default {
+  background-color: transparent;
+  color: #FF003C;
+  border: 2px solid #FF003C;
+  padding: 10px 20px;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: bold;
+  box-shadow:
+    0 0 5px #FF003C,
+    0 0 10px #FF003C,
+    0 0 20px #FF1744;
+  transition: 0.3s;
+}
+
+.button-default:hover {
+  box-shadow:
+    0 0 10px #FF003C,
+    0 0 20px #FF1744,
+    0 0 30px #FF1744;
+  background-color: rgba(255, 0, 60, 0.1);
+  color: white;
+}
+
+.glitch-svg-deep {
+  width: 100%;
+  height: 180px;
+  display: block;
+  background: transparent;
+  transform: scale(1.05);
+  margin-bottom: 1rem;
+}
+
+
+.deep-text {
+  font-family: 'Courier New', monospace;
+  font-size: 80px;
+  fill: #ffffff;
+  opacity: 0.15;
+  letter-spacing: 5px;
+  animation: depth 2s ease-in infinite;
+  text-shadow:
+  0 0 4px rgb(255, 0, 60),
+  0 0 12px rgba(255, 0, 60, 0.961);
+}
+
+.underworld-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(247, 255, 142, 0.079) 1%, transparent 70%);
+  filter: blur(35px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.left-text {
+  background-color: #00000000;
+  padding: 0px;
+  margin: 0px;
+  z-index: 0.1;
+  -webkit-text-stroke: 10px #FF003C,;
+  text-shadow:
+    -1px -1px 0 #FF003C,
+     10px -1px 0 #FF003C,
+    -10px  1px 0 #FF003C,
+     1px  10px 0 #FF003C,;
+}
+
+
+@keyframes drift-depth {
+  0%   { transform: translate(0, 0) scale(1.05); }
+  50%  { transform: translate(-2px, 1px) scale(1.08); }
+  100% { transform: translate(0, 0) scale(1.05); }
 }
 
 @media (max-width: 768px) {

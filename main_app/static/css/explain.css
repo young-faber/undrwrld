@@ -1,6 +1,11 @@
 body {
       background-color: #121212;
       color: #f8f9fa;
+      background-image: url("main_app/static/img/tayler30ft.smart.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
     }
 
     a {

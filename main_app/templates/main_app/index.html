@@ -15,7 +15,7 @@
     <div class="custom-layout">
       <div class="left block text-white text-center">
         <canvas class="hack-canvas"></canvas>
-        <h1>что тут происходит</h1>
+        <h1 class="left-text">что тут происходит</h1>
         {{request.user}}
         <p>Это текст в левом блоке...</p>
       </div>
@@ -74,81 +74,97 @@
   </div>
 
   <script>
-    document.querySelectorAll('.hack-canvas').forEach((canvas) => {
-      const ctx = canvas.getContext('2d');
-      const letters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZЪ'.split('');
-      const specialWords = [
-        'UNDERWORLD', 'ARSENIY', 'EXECUTE', 'I SEE YOU', 'WELCOME',
-        'WAS CREATED BY FABER', 'SPONSORED BY VLADIMIR ROMANENKO',
-        'EI_ZER', 'DJANGO_INCEPTION'
-      ];
+  document.querySelectorAll('.hack-canvas').forEach((canvas) => {
+    const ctx = canvas.getContext('2d');
+    const letters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZЪ'.split('');
+    const specialWords = [
+      'UNDERWORLD', 'ARSENIY', 'EXECUTE', 'I SEE YOU', 'WELCOME',
+      'WAS CREATED BY FABER', 'SPONSORED BY VLADIMIR ROMANENKO',
+      'EI_ZER', 'DJANGO_INCEPTION'
+    ];
 
-      const fontSize = 22;
-      let columns, drops, specialDrops = [];
+    const baseFontSize = 22;
+    let columns, drops, specialDrops = [], zLevels = [];
 
-      function resize() {
-        canvas.width = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
-        columns = Math.floor(canvas.width / fontSize);
-        drops = new Array(columns).fill(1);
-        specialDrops = new Array(columns).fill(null);
-      }
+    function resize() {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+      columns = Math.floor(canvas.width / baseFontSize);
+      drops = new Array(columns).fill(1);
+      specialDrops = new Array(columns).fill(null);
+      zLevels = new Array(columns).fill(0).map(() => {
+        const rand = Math.random();
+        if (rand < 0.2) return -0.1;   // 20% дальние
+        if (rand > 0.8) return 0.1;    // 20% ближние
+        return 0;                    // остальные обычные
+      });
+    }
 
-      resize();
-      window.addEventListener('resize', resize);
+    resize();
+    window.addEventListener('resize', resize);
 
-      function draw() {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.font = fontSize + 'px monospace';
+    function draw() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        for (let i = 0; i < drops.length; i++) {
-          let char, color;
+      for (let i = 0; i < drops.length; i++) {
+        const z = zLevels[i];
 
-          if (specialDrops[i]) {
-            const word = specialDrops[i];
-            char = word.chars[word.index];
-            color = '#FF003C';
-            word.index++;
-            if (word.index >= word.chars.length) {
-              specialDrops[i] = null;
-            }
-          } else {
-            char = letters[Math.floor(Math.random() * letters.length)];
-            color = '#FFFFFF';
+        // Настройки по z
+        const scale = z === 1 ? 1.3 : z === -1 ? 0.7 : 1.0;
+        const opacity = z === 1 ? 1 : z === -1 ? 0.3 : 0.7;
+        const speed = z === 1 ? 2.5 : z === -1 ? 0.5 : 1.5;
+        const blur = z === 1 ? 8 : z === -1 ? 1 : 4;
 
-            if (Math.random() < 0.003) {
-              const word = specialWords[Math.floor(Math.random() * specialWords.length)];
-              specialDrops[i] = {
-                chars: word.split(''),
-                index: 0
-              };
-            }
-          }
+        const currentFontSize = baseFontSize * scale;
+        ctx.font = currentFontSize + 'px monospace';
 
-          const x = i * fontSize;
-          const y = drops[i] * fontSize;
+        let char, color;
 
-          ctx.shadowColor = color;
-          ctx.shadowBlur = (color === '#FF003C') ? 10 : 3;
-          ctx.fillStyle = color;
-          ctx.fillText(char, x, y);
-
-          ctx.shadowBlur = 0;
-          ctx.fillStyle = color;
-          ctx.fillText(char, x, y);
-
-          if (y > canvas.height && Math.random() > 0.975) {
-            drops[i] = 0;
+        if (specialDrops[i]) {
+          const word = specialDrops[i];
+          char = word.chars[word.index];
+          color = '#FF003C';
+          word.index++;
+          if (word.index >= word.chars.length) {
             specialDrops[i] = null;
           }
+        } else {
+          char = letters[Math.floor(Math.random() * letters.length)];
+          color = '#FFFFFF';
 
-          drops[i]++;
+          if (Math.random() < 0.003) {
+            const word = specialWords[Math.floor(Math.random() * specialWords.length)];
+            specialDrops[i] = {
+              chars: word.split(''),
+              index: 0
+            };
+          }
         }
-      }
 
-      setInterval(draw, 40);
-    });
-  </script>
+        const x = i * baseFontSize;
+        const y = drops[i] * currentFontSize;
+
+        ctx.shadowColor = color;
+        ctx.shadowBlur = blur;
+
+        ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+        ctx.fillText(char, x, y);
+
+        ctx.shadowBlur = 0;
+        ctx.fillText(char, x, y);
+
+        if (y > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+          specialDrops[i] = null;
+        }
+
+        drops[i] += speed;
+      }
+    }
+
+    setInterval(draw, 40);
+  });
+</script>
 </body>
 </html>

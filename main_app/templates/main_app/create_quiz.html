@@ -1,13 +1,22 @@
 {% extends "main_app/base.html" %}
 {% load static %}
 {% block title %}create_quiz{% endblock title %}
-{% block name %}создание викторины{% endblock name %}
+{% block name %} <div class="create">создание викторины <i class="bi bi-gear-wide-connected"></i> </div>{% endblock name %}
 
 {% block css %}
 <style>
   body {
-    background-color: #121212;
+    background-color: #bf3737;
     color: white;
+  }
+
+  .create{
+     font-size: 24px;
+  }
+
+  main {
+      background-color: #000;
+      place-items: center;
   }
 
   form {
@@ -21,13 +30,15 @@
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
+    margin: 6px;
+    font-size: larger;
   }
 
   .quiz-meta input {
     background-color: #0a0a0a;
     color: white;
-    border: 1px solid #333;
-    border-radius: 8px;
+    border: 1px solid #00e5ff;
+    border-radius: 4px;
     padding: 0.5rem 0.75rem;
     flex: 1;
     min-width: 200px;
@@ -37,9 +48,9 @@
     display: flex;
     flex-direction: column;
     background-color: #1c1c1c;
-    border: 1px solid #333;
+    border: 1px solid  #00e5ff93;
     padding: 1rem;
-    border-radius: 10px;
+    border-radius: 8px;
     gap: 0.75rem;
   }
 
@@ -81,18 +92,17 @@
 {% endblock css %}
 
 {% block content %}
-<form action="/create_quiz_support/" method="post">
+<form action="/create_quiz_support/" method="post" style="place-items: center;" >
   {% csrf_token %}
 
   <!-- Общая информация -->
   <div class="quiz-meta">
-    <input type="text" name="topic" placeholder="Введите название викторины">
-    <input type="text" name="level" placeholder="Уровень сложности">
+    <input type="text" name="topic" placeholder="Введите название викторины" style="width: 1024px;">
   </div>
 
   <!-- Вопросы -->
   {% for i in "12345"|make_list %}
-    <div class="question-block">
+    <div class="question-block" style="width: 1000px;">
       <input type="text" name="question_{{ i }}" placeholder="Вопрос {{ i }}">
       {% for j in "1234"|make_list %}
         <input type="text" name="answer_{{ i }}_{{ j }}" placeholder="Ответ {{ j }}">

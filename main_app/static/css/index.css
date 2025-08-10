@@ -236,14 +236,25 @@ input[type="submit"] {
   pointer-events: none;
 }
 
+.left-text {
+  background-color: #00000000;
+  padding: 0px;
+  margin: 0px;
+  z-index: 0.1;
+  -webkit-text-stroke: 10px #FF003C,;
+  text-shadow:
+    -1px -1px 0 #FF003C,
+     10px -1px 0 #FF003C,
+    -10px  1px 0 #FF003C,
+     1px  10px 0 #FF003C,;
+}
+
+
 @keyframes drift-depth {
   0%   { transform: translate(0, 0) scale(1.05); }
   50%  { transform: translate(-2px, 1px) scale(1.08); }
   100% { transform: translate(0, 0) scale(1.05); }
 }
-
-
-
 
 @media (max-width: 768px) {
     .custom-layout {
